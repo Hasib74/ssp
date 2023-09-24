@@ -26,7 +26,7 @@ apply plugin: 'kotlin-android'
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 
 android {
-    namespace "com.example.employee_attendance_system"
+    namespace "com.simec.dss_ssp"
     compileSdkVersion flutter.compileSdkVersion
     ndkVersion flutter.ndkVersion
 
@@ -38,14 +38,27 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
-
+    signingConfigs {
+        debugConfig {
+            storeFile file('debug.keystore')
+            keyAlias 'androiddebugkey'
+            keyPassword 'android'
+            storePassword 'android'
+        }
+        releaseConfig {
+            storeFile file('../Keystore/keystore.jks')
+            keyAlias 'simec123'
+            keyPassword 'simec123'
+            storePassword 'simec123'
+        }
+    }
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
     }
 
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-        applicationId "com.example.employee_attendance_system"
+        applicationId "com.simec.dss_ssp"
         // You can update the following values to match your application needs.
         // For more information, see: https://docs.flutter.dev/deployment/android#reviewing-the-gradle-build-configuration.
         minSdkVersion flutter.minSdkVersion

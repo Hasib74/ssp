@@ -15,7 +15,7 @@ class AuthController {
     if (_validated()) {
       EasyLoading.show();
       if (userIdController.value.text == "dssssp" &&
-          passwordController.value.text == "dssssp1234") {
+          passwordController.value.text == "dssssp123") {
         EasyLoading.dismiss();
         Navigator.of(context).push(
             new MaterialPageRoute(builder: (context) => AttendanceScreen()));

@@ -64,7 +64,7 @@ class _SignInScreenState extends State<SignInScreen> {
                             controller:
                                 getIt<AuthController>().userIdController,
 
-                            hint: "User Id",
+                            hint: "User ID",
                             label: "User ID",
 
                             isRequired: true,
