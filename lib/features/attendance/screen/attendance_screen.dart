@@ -7,6 +7,7 @@ import '../../../core/DI/depandancy_injection.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../core/utls/app_spaces.dart';
 import '../controller/attandance_controller.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class AttendanceScreen extends StatefulWidget {
   const AttendanceScreen({super.key});
@@ -16,6 +17,25 @@ class AttendanceScreen extends StatefulWidget {
 }
 
 class _AttendanceScreenState extends State<AttendanceScreen> {
+  DateTime? currentBackPressTime;
+
+  Future<bool> _onBackPressed() {
+    DateTime now = DateTime.now();
+
+    // Allow exit if the back button is pressed twice within 2 seconds
+    if (currentBackPressTime == null ||
+        now.difference(currentBackPressTime!) > Duration(seconds: 2)) {
+      currentBackPressTime = now;
+      Fluttertoast.showToast(
+        msg: "Press back again to exit",
+        backgroundColor: Colors.black,
+        textColor: Colors.white,
+      );
+      return Future.value(false);
+    }
+    return Future.value(true);
+  }
+
   @override
   void initState() {
     // TODO: implement initState
@@ -27,48 +47,50 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-
-      appBar: AppBar(
-        leading: Container(),
-        title: const Text("SSP Attendance"),
-        centerTitle: true,
-      ),
-      backgroundColor: AppTheme.backgroundColor,
-      body: SafeArea(
-        child: ListView(
-          children: [
-            Form(
-                key: getIt<AttendanceController>().fromKey,
-                child: Column(
-                  children: [
-                    const IdCardInfo(),
-                    OfficeInfo(),
-                    const UserInfo(),
-                  ],
-                )),
-            AppSpaces.spaceHeight20,
-            AppSpaces.spaceHeight20,
-            Padding(
-              padding: const EdgeInsets.all(16),
-              child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    foregroundColor: Colors.white,
-                    backgroundColor: Theme.of(context).primaryColor,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
+    return WillPopScope(
+      onWillPop: _onBackPressed,
+      child: Scaffold(
+        appBar: AppBar(
+          leading: Container(),
+          title: const Text("SSP Attendance"),
+          centerTitle: true,
+        ),
+        backgroundColor: AppTheme.backgroundColor,
+        body: SafeArea(
+          child: ListView(
+            children: [
+              Form(
+                  key: getIt<AttendanceController>().fromKey,
+                  child: Column(
+                    children: [
+                      const IdCardInfo(),
+                      OfficeInfo(),
+                      const UserInfo(),
+                    ],
+                  )),
+              AppSpaces.spaceHeight20,
+              AppSpaces.spaceHeight20,
+              Padding(
+                padding: const EdgeInsets.all(16),
+                child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      foregroundColor: Colors.white,
+                      backgroundColor: Theme.of(context).primaryColor,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
                     ),
-                  ),
-                  onPressed: () {
-                    getIt<AttendanceController>().postAttendance(context, () {
-                      setState(() {});
-                    });
-                  },
-                  child: const Center(child: Text("Submit"))),
-            ),
-            AppSpaces.spaceHeight20,
-            AppSpaces.spaceHeight20,
-          ],
+                    onPressed: () {
+                      getIt<AttendanceController>().postAttendance(context, () {
+                        setState(() {});
+                      });
+                    },
+                    child: const Center(child: Text("Submit"))),
+              ),
+              AppSpaces.spaceHeight20,
+              AppSpaces.spaceHeight20,
+            ],
+          ),
         ),
       ),
     );

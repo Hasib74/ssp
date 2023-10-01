@@ -49,6 +49,8 @@ dependencies:
   giffy_dialog: ^2.0.0+2
   flutter_easyloading: ^3.0.5
   flutter_svg:
+  shared_preferences:
+  fluttertoast:
 
 
 
