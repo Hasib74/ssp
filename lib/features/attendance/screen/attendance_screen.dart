@@ -21,6 +21,8 @@ class AttendanceScreen extends StatefulWidget {
 class _AttendanceScreenState extends State<AttendanceScreen> {
   DateTime? currentBackPressTime;
 
+  bool? isLoading = false;
+
   Future<bool> _onBackPressed() {
     DateTime now = DateTime.now();
 
@@ -49,79 +51,88 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async {
-        showDialog(
-            context: context,
-            builder: (_) {
-              return AlertDialog(
-                title: Text("Are you sure to exit?"),
-                actions: [
-                  TextButton(
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
-                      child: Text(
-                        "No",
-                        style: TextStyle(color: Colors.green),
-                      )),
-                  TextButton(
-                      onPressed: () {
-                        exit(0);
-                      },
-                      child: Text(
-                        "Yes",
-                        style: TextStyle(color: Colors.red),
-                      )),
-                ],
-              );
-            });
+    return AbsorbPointer(
+      absorbing: isLoading!,
+      child: WillPopScope(
+        onWillPop: () async {
+          showDialog(
+              context: context,
+              builder: (_) {
+                return AlertDialog(
+                  title: Text("Are you sure to exit?"),
+                  actions: [
+                    TextButton(
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                        child: Text(
+                          "No",
+                          style: TextStyle(color: Colors.green),
+                        )),
+                    TextButton(
+                        onPressed: () {
+                          exit(0);
+                        },
+                        child: Text(
+                          "Yes",
+                          style: TextStyle(color: Colors.red),
+                        )),
+                  ],
+                );
+              });
 
-        return false;
-      },
-      child: Scaffold(
-        appBar: AppBar(
-          leading: Container(),
-          title: const Text("SSP Attendance"),
-          centerTitle: true,
-        ),
-        backgroundColor: AppTheme.backgroundColor,
-        body: SafeArea(
-          child: ListView(
-            children: [
-              Form(
-                  key: getIt<AttendanceController>().fromKey,
-                  child: Column(
-                    children: [
-                      const IdCardInfo(),
-                      OfficeInfo(),
-                      const UserInfo(),
-                    ],
-                  )),
-              AppSpaces.spaceHeight20,
-              AppSpaces.spaceHeight20,
-              Padding(
-                padding: const EdgeInsets.all(16),
-                child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      foregroundColor: Colors.white,
-                      backgroundColor: Theme.of(context).primaryColor,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
+          return false;
+        },
+        child: Scaffold(
+          appBar: AppBar(
+            leading: Container(),
+            title: const Text("SSP Attendance"),
+            centerTitle: true,
+          ),
+          backgroundColor: AppTheme.backgroundColor,
+          body: SafeArea(
+            child: ListView(
+              children: [
+                Form(
+                    key: getIt<AttendanceController>().fromKey,
+                    child: Column(
+                      children: [
+                        const IdCardInfo(),
+                        OfficeInfo(),
+                        const UserInfo(),
+                      ],
+                    )),
+                AppSpaces.spaceHeight20,
+                AppSpaces.spaceHeight20,
+                Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        foregroundColor: Colors.white,
+                        backgroundColor: Theme.of(context).primaryColor,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        //height
+                        minimumSize: const Size(double.infinity, 50),
                       ),
-                      //height
-                      minimumSize: const Size(double.infinity, 50),
-                    ),
-                    onPressed: () {
-                      getIt<AttendanceController>().postAttendance(context, () {
-                        setState(() {});
-                      });
-                    },
-                    child: const Center(child: Text("Submit"))),
-              ),
-              AppSpaces.spaceHeight20,
-              AppSpaces.spaceHeight20,
-            ],
+                      onPressed: () {
+                        setState(() {
+                          isLoading = true;
+                        });
+                        getIt<AttendanceController>().postAttendance(context,
+                            () {
+                          setState(() {
+                            isLoading = false;
+                          });
+                        });
+                      },
+                      child: const Center(child: Text("Submit"))),
+                ),
+                AppSpaces.spaceHeight20,
+                AppSpaces.spaceHeight20,
+              ],
+            ),
           ),
         ),
       ),

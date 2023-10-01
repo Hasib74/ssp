@@ -123,7 +123,7 @@ class AppTextFiled extends StatelessWidget {
         //isCollapsed: isCollapsed ?? false,
         //   filled: filled ?? false,
         //   labelText: label,
-        label: Row(
+        label: Wrap(
           children: [
             Text(label!),
             if (isRequired ?? false)
@@ -142,6 +142,7 @@ class AppTextFiled extends StatelessWidget {
             color: AppTheme.primaryColor,
             width: 1,
           ),
+
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
