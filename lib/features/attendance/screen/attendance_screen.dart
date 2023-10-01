@@ -61,12 +61,18 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
                       onPressed: () {
                         Navigator.of(context).pop();
                       },
-                      child: Text("No")),
+                      child: Text(
+                        "No",
+                        style: TextStyle(color: Colors.green),
+                      )),
                   TextButton(
                       onPressed: () {
                         exit(0);
                       },
-                      child: Text("Yes")),
+                      child: Text(
+                        "Yes",
+                        style: TextStyle(color: Colors.red),
+                      )),
                 ],
               );
             });
