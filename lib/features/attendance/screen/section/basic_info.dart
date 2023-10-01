@@ -45,7 +45,6 @@ class _UserInfoState extends State<UserInfo> {
                     const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
                 child: AppTextFiled(
                   context: context,
-
                   controller:
                       getIt<AttendanceController>().dateOfBirthController,
                   enabled: false,

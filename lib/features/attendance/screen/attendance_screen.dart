@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:employee_attendance_system/features/attendance/screen/section/basic_info.dart';
 import 'package:employee_attendance_system/features/attendance/screen/section/id_card_info.dart';
 import 'package:employee_attendance_system/features/attendance/screen/section/office_info.dart';
@@ -48,7 +50,29 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      onWillPop: _onBackPressed,
+      onWillPop: () async {
+        showDialog(
+            context: context,
+            builder: (_) {
+              return AlertDialog(
+                title: Text("Are you sure to exit?"),
+                actions: [
+                  TextButton(
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                      child: Text("No")),
+                  TextButton(
+                      onPressed: () {
+                        exit(0);
+                      },
+                      child: Text("Yes")),
+                ],
+              );
+            });
+
+        return false;
+      },
       child: Scaffold(
         appBar: AppBar(
           leading: Container(),
@@ -79,6 +103,8 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),
                       ),
+                      //height
+                      minimumSize: const Size(double.infinity, 50),
                     ),
                     onPressed: () {
                       getIt<AttendanceController>().postAttendance(context, () {

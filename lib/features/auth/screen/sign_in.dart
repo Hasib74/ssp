@@ -110,6 +110,9 @@ class _SignInScreenState extends State<SignInScreen> {
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10),
                         ),
+
+                        minimumSize: const Size(double.infinity, 50),
+
                       ),
                       onPressed: () {
                         getIt<AuthController>().signIn(context);

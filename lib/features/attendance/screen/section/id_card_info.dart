@@ -23,7 +23,6 @@ class IdCardInfo extends StatelessWidget {
           AppSpaces.spaceHeight20,
           AppTextFiled(
             context: context,
-
             controller: getIt<AttendanceController>().fullNameController,
             isRequired: true,
             label: "Full Name",
@@ -33,7 +32,6 @@ class IdCardInfo extends StatelessWidget {
           AppSpaces.spaceHeight20,
           AppTextFiled(
             context: context,
-
             controller: getIt<AttendanceController>().designationController,
             isRequired: true,
             label: "Designation",
@@ -63,7 +61,6 @@ class IdCardInfo extends StatelessWidget {
           AppSpaces.spaceHeight20,
           AppTextFiled(
             context: context,
-
             controller: getIt<AttendanceController>().nidIsNidJbraNoController,
             isRequired: true,
             label: "NIDISNIDJBRA No",
@@ -73,22 +70,21 @@ class IdCardInfo extends StatelessWidget {
           AppSpaces.spaceHeight15,
           AppTextFiled(
             context: context,
-
             controller: getIt<AttendanceController>().phoneNumberController,
             isRequired: true,
             label: "Phone Number",
             hint: 'Enter Phone Number',
-            textInputType: TextInputType.name,
+            textInputType: TextInputType.number,
           ),
           AppSpaces.spaceHeight15,
           AppTextFiled(
+            isEmail: true,
             context: context,
-
             controller: getIt<AttendanceController>().emailController,
             isRequired: true,
             label: "Email",
             hint: 'Enter Email',
-            textInputType: TextInputType.name,
+            textInputType: TextInputType.emailAddress,
           ),
         ],
       ),

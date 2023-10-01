@@ -49,6 +49,8 @@ class AppTextFiled extends StatelessWidget {
 
   BuildContext context;
 
+  bool? isEmail;
+
   Function(String?)? onValidation;
 
   List<String>? dropDownMenu = [];
@@ -101,6 +103,7 @@ class AppTextFiled extends StatelessWidget {
       this.prefixIcon,
       this.dropDownMenu,
       this.onValidation,
+      this.isEmail,
       required this.context});
 
   @override
@@ -176,6 +179,10 @@ class AppTextFiled extends StatelessWidget {
         if (isRequired ?? false) {
           if (value!.isEmpty) {
             return "This field is required";
+          }
+
+          if (isEmail == true && !value.contains("@")) {
+            return "Please enter valid email";
           }
         }
         if (onValidation != null) {
