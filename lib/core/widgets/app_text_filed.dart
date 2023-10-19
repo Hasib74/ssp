@@ -1,5 +1,6 @@
 import 'package:employee_attendance_system/core/theme/app_theme.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class AppTextFiled extends StatelessWidget {
   String? label;
@@ -142,7 +143,6 @@ class AppTextFiled extends StatelessWidget {
             color: AppTheme.primaryColor,
             width: 1,
           ),
-
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
@@ -181,11 +181,12 @@ class AppTextFiled extends StatelessWidget {
           if (value!.isEmpty) {
             return "This field is required";
           }
-
-          if (isEmail == true && !value.contains("@")) {
-            return "Please enter valid email";
-          }
         }
+
+        if (isEmail == true && value!.isNotEmpty && !value.isEmail) {
+          return "Please enter valid email";
+        }
+
         if (onValidation != null) {
           return onValidation!(value);
         }

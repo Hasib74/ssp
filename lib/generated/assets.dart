@@ -2,11 +2,12 @@
 class Assets {
   Assets._();
 
+  static const String assetsAppLogo = 'assets/app_logo.png';
   static const String assetsGovtLogo = 'assets/govt_logo.svg';
   static const String assetsLogo = 'assets/logo.png';
-  static const String employeeAttendanceSystemAssetsLogo = 'assets/logo.svg';
   static const String lottieAnimationLmsuu999 = 'assets/lottie/animation_lmsuu999.json';
   static const String lottieIssue = 'assets/lottie/issue.json';
   static const String lottieSuccess = 'assets/lottie/success.json';
+  static const String sspAttendanceAssetsLogo = 'assets/logo.svg';
 
 }

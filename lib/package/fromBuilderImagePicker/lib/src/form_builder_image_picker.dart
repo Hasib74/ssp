@@ -5,8 +5,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:image_picker/image_picker.dart';
 
+import 'controller/image_picker_controller.dart';
 import 'image_source_option.dart';
 import 'image_source_sheet.dart';
+import 'package:path/path.dart';
+
+late XFile? _imageFile;
 
 /// Field for picking image(s) from Gallery or Camera.
 ///
@@ -22,6 +26,8 @@ class FormBuilderImagePicker extends FormBuilderFieldDecoration<List<dynamic>> {
   ///
   /// when [maxImages] == 1, it's better to set this to false
   final bool showDecoration;
+
+  //final FromBuilderController fromBuilderController;
 
   final Function(XFile image)? onImage;
 
@@ -78,6 +84,8 @@ class FormBuilderImagePicker extends FormBuilderFieldDecoration<List<dynamic>> {
   /// ```
   final dynamic Function(dynamic obj)? displayCustomType;
 
+  final ImagePickerController imagePickerController;
+
 //  final void Function(Image)? onImage;
 
   /// maximum images to pick
@@ -117,7 +125,6 @@ class FormBuilderImagePicker extends FormBuilderFieldDecoration<List<dynamic>> {
       optionsBuilder;
 
   final WidgetBuilder? loadingWidget;
-
 
   final VoidCallback? onRemoveImageFromUI;
 
@@ -164,7 +171,8 @@ class FormBuilderImagePicker extends FormBuilderFieldDecoration<List<dynamic>> {
     this.optionsBuilder,
     this.onRemove,
     this.onRemoveImageFromUI,
-
+    required this.imagePickerController,
+    // required this.fromBuilderController,
     this.availableImageSources = const [
       ImageSourceOption.camera,
       ImageSourceOption.gallery,
@@ -181,6 +189,8 @@ class FormBuilderImagePicker extends FormBuilderFieldDecoration<List<dynamic>> {
 
             /// how many items to display in the list view (including upload btn)
             final itemCount = value.length + (canUpload ? 1 : 0);
+
+            //fromBuilderController = super ;
 
             Widget addButtonBuilder(
               BuildContext context,
@@ -229,6 +239,8 @@ class FormBuilderImagePicker extends FormBuilderFieldDecoration<List<dynamic>> {
                         state.focus();
                         field.didChange([...value, ...image]);
                         onImage?.call(image.first);
+
+                        _imageFile = image.first;
                         Navigator.pop(state.context);
                       },
                     );
@@ -281,6 +293,24 @@ class FormBuilderImagePicker extends FormBuilderFieldDecoration<List<dynamic>> {
                                   fit: fit,
                                   loadingWidget: loadingWidget,
                                 );
+
+              imagePickerController.imagePickerStream.listen((event) {
+                if (event == "remove") {
+                  if (onRemove != null) {
+                    onRemove();
+                  }
+                  state.focus();
+                  field.didChange(
+                    value.toList()..removeAt(index),
+                  );
+
+                  print(
+                      "imagePickerController.imagePickerStream.listen and the value is ${value.toList()}");
+
+                  state.focus();
+                }
+              });
+
               return Stack(
                 key: ObjectKey(item),
                 children: <Widget>[
@@ -317,6 +347,13 @@ class FormBuilderImagePicker extends FormBuilderFieldDecoration<List<dynamic>> {
                         ),
                       ),
                     ),
+                  if (state.enabled)
+                    PositionedDirectional(
+                        start: 40,
+                        end: 30,
+                        bottom: 0,
+                        top: 0,
+                        child: Text(basename(_imageFile!.path)))
                 ],
               );
             }
@@ -411,3 +448,9 @@ class _XFileImageState extends State<XFileImage> {
     );
   }
 }
+
+//  mixin FromBuilderController extends FormBuilderImagePickerState {
+//   void removeAllImage() {
+//     super.effectiveValue.removeAt(0);
+//   }
+// }

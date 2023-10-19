@@ -8,9 +8,14 @@ import 'package:flutter/material.dart';
 
 import '../../../../../core/DI/depandancy_injection.dart';
 import '../../../../package/fromBuilderImagePicker/lib/form_builder_image_picker.dart';
+import '../../../../package/fromBuilderImagePicker/lib/src/controller/image_picker_controller.dart';
 
 class IdCardInfo extends StatelessWidget {
-  const IdCardInfo({super.key});
+  ImagePickerController imagePickerController;
+
+  IdCardInfo({super.key, required this.imagePickerController});
+
+  VoidCallback? removeImageForImageFiled;
 
   @override
   Widget build(BuildContext context) {
@@ -43,6 +48,8 @@ class IdCardInfo extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               FormBuilderImagePicker(
+                imagePickerController: imagePickerController,
+                // fromBuilderController: fromBuilderController,
                 key: getIt<AttendanceController>().photoKey,
                 backgroundColor: Colors.transparent,
                 name: 'photo',
@@ -63,15 +70,15 @@ class IdCardInfo extends StatelessWidget {
             context: context,
             controller: getIt<AttendanceController>().nidIsNidJbraNoController,
             isRequired: true,
-            label: "NIDISNIDJBRA No",
-            hint: 'Enter NIDISNIDJBRA No',
+            label: "NID/BRC Number",
+            hint: 'NID/BRC Number',
             textInputType: TextInputType.name,
           ),
           AppSpaces.spaceHeight15,
           AppTextFiled(
             context: context,
             controller: getIt<AttendanceController>().phoneNumberController,
-            isRequired: true,
+            isRequired: false,
             label: "Phone Number",
             hint: 'Enter Phone Number',
             textInputType: TextInputType.number,
@@ -81,7 +88,7 @@ class IdCardInfo extends StatelessWidget {
             isEmail: true,
             context: context,
             controller: getIt<AttendanceController>().emailController,
-            isRequired: true,
+            isRequired: false,
             label: "Email",
             hint: 'Enter Email',
             textInputType: TextInputType.emailAddress,

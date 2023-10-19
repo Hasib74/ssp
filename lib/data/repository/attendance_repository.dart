@@ -89,14 +89,27 @@ class AttendanceRepositoryImpl extends AttendanceRepository {
     print("Requested body: $body");
     var request = MultipartRequest('POST', Uri.parse(AppUrl.idCardStore));
 
-    var signatureFileReq = await MultipartFile.fromPath(
-        'signature_upload', signatureFile!.path.toString());
-    request.files.add(signatureFileReq);
+    if (signatureFile != null) {
+      //  var _compressedFile = await AppDataHelper.compressFile(signatureFile);
 
-    var photoFileReq =
-        await MultipartFile.fromPath('photo', photoFile!.path.toString());
+      // print("Compressed File Signature : $_compressedFile");
 
-    request.files.add(photoFileReq);
+      var signatureFileReq = await MultipartFile.fromPath(
+          'signature_upload', signatureFile.path.toString() ?? "");
+
+      request.files.add(signatureFileReq);
+    }
+
+    if (photoFile != null) {
+      //   var _compressedFile = await AppDataHelper.compressFile(photoFile);
+
+      //print("Compressed File Photo : $_compressedFile");
+
+      var photoFileReq = await MultipartFile.fromPath(
+          'photo', photoFile.path.toString() ?? "");
+
+      request.files.add(photoFileReq);
+    }
 
     request.fields.addAll(body);
 

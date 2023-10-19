@@ -3,6 +3,8 @@ import 'dart:io';
 import 'package:employee_attendance_system/features/attendance/screen/section/basic_info.dart';
 import 'package:employee_attendance_system/features/attendance/screen/section/id_card_info.dart';
 import 'package:employee_attendance_system/features/attendance/screen/section/office_info.dart';
+import 'package:employee_attendance_system/package/fromBuilderImagePicker/lib/form_builder_image_picker.dart';
+import 'package:employee_attendance_system/package/fromBuilderImagePicker/lib/src/controller/image_picker_controller.dart';
 import 'package:flutter/material.dart';
 
 import '../../../core/DI/depandancy_injection.dart';
@@ -22,6 +24,14 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
   DateTime? currentBackPressTime;
 
   bool? isLoading = false;
+
+  // FromBuilderController photoFromBuilderController = FromBuilderController();
+
+  // FromBuilderController signatureFromBuilderController = FromBuilderController();
+  ImagePickerController photoImagePickerController = ImagePickerController();
+
+  ImagePickerController signatureImagePickerController =
+      ImagePickerController();
 
   Future<bool> _onBackPressed() {
     DateTime now = DateTime.now();
@@ -47,6 +57,15 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
 
     getIt<AttendanceController>().getBloodGroup(context, setState);
     getIt<AttendanceController>().getSSPList(context, setState);
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+
+    photoImagePickerController.dispose();
+    signatureImagePickerController.dispose();
   }
 
   @override
@@ -97,8 +116,15 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
                     key: getIt<AttendanceController>().fromKey,
                     child: Column(
                       children: [
-                        const IdCardInfo(),
-                        OfficeInfo(),
+                        IdCardInfo(
+                          imagePickerController: photoImagePickerController,
+                          //   fromBuilderController: photoFromBuilderController,
+                        ),
+                        OfficeInfo(
+                          imagePickerController: signatureImagePickerController,
+                          /* fromBuilderController:
+                              signatureFromBuilderController!,*/
+                        ),
                         const UserInfo(),
                       ],
                     )),
@@ -116,16 +142,26 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
                         //height
                         minimumSize: const Size(double.infinity, 50),
                       ),
-                      onPressed: () {
-                        setState(() {
-                          isLoading = true;
-                        });
-                        getIt<AttendanceController>().postAttendance(context,
-                            () {
+                      onPressed: () async {
+                        await getIt<AttendanceController>()
+                            .postAttendance(context, () {
                           setState(() {
                             isLoading = false;
                           });
+
+                          photoImagePickerController.removeImage();
+                          signatureImagePickerController.removeImage();
+                        }, (bool? isValidated) {
+                          if (isValidated != null && isValidated) {
+                            setState(() {
+                              isLoading = true;
+                            });
+                          }
                         });
+
+                        //  FormBuilderImagePickerState().value?.clear();
+
+                        setState(() {});
                       },
                       child: const Center(child: Text("Submit"))),
                 ),

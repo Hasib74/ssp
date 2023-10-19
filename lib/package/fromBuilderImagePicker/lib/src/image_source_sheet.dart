@@ -79,7 +79,7 @@ class ImageSourceBottomSheetState extends State<ImageSourceBottomSheet> {
           preferredCameraDevice: widget.preferredCameraDevice,
           maxHeight: widget.maxHeight,
           maxWidth: widget.maxWidth,
-          imageQuality: widget.imageQuality,
+          imageQuality: 50,
         );
         _isPickingImage = false;
         if (pickedFile != null) {
@@ -89,7 +89,7 @@ class ImageSourceBottomSheetState extends State<ImageSourceBottomSheet> {
         final pickedFiles = await imagePicker.pickMultiImage(
           maxHeight: widget.maxHeight,
           maxWidth: widget.maxWidth,
-          imageQuality: widget.imageQuality,
+          imageQuality: 50,
         );
         _isPickingImage = false;
         if (pickedFiles.isNotEmpty) {
