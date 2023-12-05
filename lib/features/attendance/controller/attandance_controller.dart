@@ -125,6 +125,11 @@ class AttendanceController {
       bool? isSuccess = await getIt<AttendanceRepository>()
           .postAttendance(context, body, photoFile, signatureFile);
 
+
+
+
+
+
       if (isSuccess == true) {
         fullNameController.clear();
         designationController.clear();

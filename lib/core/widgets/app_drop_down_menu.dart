@@ -68,7 +68,7 @@ class AppDropDownMenu extends StatelessWidget {
                 .toList(),
             validator: (value) {
               if (value == null) {
-                return 'Please select gender.';
+                return 'This field is required';
               }
               return null;
             },

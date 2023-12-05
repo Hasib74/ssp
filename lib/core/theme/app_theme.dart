@@ -76,10 +76,10 @@ class AppTheme {
 
   static ThemeData getTheme() {
     return ThemeData(
+      useMaterial3: false,
       appBarTheme: const AppBarTheme(
         color: primaryColor,
         elevation: 5,
-
       ),
       primaryColor: primaryColor,
       primaryColorDark: primaryColorDark,

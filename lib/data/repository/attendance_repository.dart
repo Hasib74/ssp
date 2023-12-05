@@ -124,6 +124,12 @@ class AttendanceRepositoryImpl extends AttendanceRepository {
         EasyLoading.dismiss();
 
         if (response.statusCode == 200) {
+
+        //  print("Response success: ${response.stream.bytesToString()}");
+
+
+          response.stream.bytesToString().then((value) => print("Response success: $value"));
+
           AppDialog.successDialog(context);
           return true;
         } else {
